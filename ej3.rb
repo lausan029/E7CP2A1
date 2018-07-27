@@ -11,43 +11,72 @@ puts ' 9: Muestra dos listas de personas, una por cada género.'
 puts ' 10: Salir'
 num = gets.chomp.to_i
 
-bucket = {}
 arr = []
+
 while num != 10
 	case num
 	when 1
 	  puts 'Nombre'
-	  nom = gets.chomp
-	  bucket[:nombre] = nom.capitalize
+	  nom = gets.chomp.capitalize
 	  puts 'Edad'
 	  age = gets.chomp
-	  bucket[:edad] = age
 	  puts 'Comuna'
-	  com = gets.chomp
-	  bucket[:comuna] = com.capitalize
+	  com = gets.chomp.capitalize
 	  puts 'Genero'
-	  sex = gets.chomp
-	  bucket[:sex] = sex.capitalize
-	  arr.push(bucket)
+	  sex = gets.chomp.capitalize
+    
+    arr << { name: nom, age: age, comuna: com, sex: sex }
 	  p arr
+
 	when 2
-	  puts '----------------------------'
+		puts 'Introduzca la posicion de valor a modificar (Ej:1)'
+    position = gets.chomp.to_i
+	  puts 'Introduzca el valor a modificar'
+    update = gets.chomp.split(":")
+    arr[position][update[0]] = update[1]
+    p "Campo modificado"
+    p arr
+
 	when 3
-	  puts '----------------------------'
+	  p arr
+	  puts 'Introduzca la posicion de la personas a eliminar'
+	  position = gets.chomp.to_i
+	  arr.delete_at(position)
+	  p 'Elemento eliminado, ahora la lista es la siguiente:'
+	  p arr
+
 	when 4
-	  puts '----------------------------'
+	  puts "La cantidad de personas ingresadas es: #{arr.count}"
+
 	when 5
-	  puts '----------------------------'
+	  puts 'las comunas son las siguientes:'
+	  arr.each do |c|
+	  	p c[:comuna]
+	  end
+
 	when 6
-	  puts '----------------------------'
+		a = []
+		arr.map do |i| 
+			if ((i[:age].to_i >= 20) && (i[:age].to_i <= 25))
+				a.push(i)
+			end
+	  end
+	  puts "Las personas que estan entre 20 y 25 años son: #{a}"
+
 	when 7
-	  puts '----------------------------'
+	  a = arr.map{|i| i[:age].to_i}
+	  inj = a.inject(0) { |sum, x| sum + x }
+	  puts "La suma es #{inj}"
+
 	when 8
-	  puts '----------------------------'
+		a = arr.map{|i| i[:age].to_i}
+	  inj = a.inject(0) { |sum, x| sum + x }
+	  promedio = inj / a.count
+	  puts "El promedio de todas las edades es #{promedio}"
 	when 9
-	  puts '----------------------------'
-	when 10
-	  puts '----------------------------'
+		femenino = arr.group_by{|f| f[:sex] == 'F'}
+	  puts femenino
+
 	else
 	  puts "Introduzca una opcion correcta"
 	end
